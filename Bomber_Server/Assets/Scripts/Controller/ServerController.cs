@@ -37,6 +37,14 @@ public class ServerController : MonoBehaviour
             var player = clientConnection.Player;
             if (player != null)
             {
+                if (player.isUpdateScore)
+                {
+                    var playerModel = new UpdatePlayerModel();
+                    playerModel.Score = player.Score;
+                    clientConnection.Send(playerModel);
+                    player.isUpdateScore = false;
+                }
+
                 if (player.isUpdatePosition)
                 {
                     var playerPositionModel = new PlayerPositionModel { PlayerId = player.Id, Position = player.Position };
@@ -45,6 +53,21 @@ public class ServerController : MonoBehaviour
                 }
             }
         }
+
+        foreach (var pair in coinController.NewCoinPositions)
+        {
+            var id = pair.Key;
+            var position = new Vector3Model(pair.Value);
+            model.CreateCoins.Add(id, position);
+        }
+        coinController.ResetNewCoins();
+
+        foreach (var coinId in coinController.DeletedCoinIds)
+        {
+            model.DeletedCoins.Add(coinId);
+        }
+        coinController.ResetDeletedCoins();
+
         server.SendAll(model);
     }
 }
