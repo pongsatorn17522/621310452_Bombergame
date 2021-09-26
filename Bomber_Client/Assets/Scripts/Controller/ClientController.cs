@@ -44,4 +44,16 @@ public class ClientController : MonoBehaviour
             playerController.SetCurrentPlayer();
         }
     }
+    public void UpdatePlayerModel(UpdateModel model)
+    {
+        foreach (var playerPositionModel in model.PlayerPositionModels)
+        {
+            var playerId = playerPositionModel.PlayerId;
+            if (playerControllers.TryGetValue(playerId, out var player))
+            {
+                player.Move(playerPositionModel.Position);
+            }
+        }
+    }
+
 }

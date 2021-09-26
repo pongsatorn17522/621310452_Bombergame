@@ -18,6 +18,8 @@ public class Server : MonoBehaviour, INetEventListener
 
     private ModelToObjectMapper modelToObjectMapper;
 
+    public Dictionary<int, PeerConnection> PeerConnections => peerConnections;
+
     private void Awake()
     {
         Debug.Log("Awake");
@@ -32,6 +34,7 @@ public class Server : MonoBehaviour, INetEventListener
     private void Update()
     {
         server.PollEvents();
+        serverController.UpdateData();
     }
 
     public void SendCreatePlayer(PlayerController playerController)
@@ -73,6 +76,7 @@ public class Server : MonoBehaviour, INetEventListener
             var player = clientConnection.Player;
             if (player != null)
             {
+                //Debug.Log($"clientConnection {clientConnection.Id} player.Id {player.Id}");
                 var createPlayerModel = new CreatePlayerModel { Id = player.Id, Position = player.Position };
                 model.CreatePlayerModels.Add(createPlayerModel);
             }
