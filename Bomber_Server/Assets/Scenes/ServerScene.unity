@@ -390,6 +390,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serverController: {fileID: 1881536980}
   coinController: {fileID: 1251710944}
+  bombController: {fileID: 1978624167}
 --- !u!114 &1881536980
 MonoBehaviour:
   m_ObjectHideFlags: 0
